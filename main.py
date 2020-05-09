@@ -141,4 +141,4 @@ async def distplayHosts(ctx):
 
 # token
 token = os.environ.get("DISCORD_BOT_SECRET")
-client.run("NzA4MDIyMDc2MDgyMDk0MTMx.XrSKZQ.6xT6tIRSXuMAM2yNictyVoLRJr0")
+client.run("YOUR TOKEN HERE")
