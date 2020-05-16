@@ -1,4 +1,22 @@
 import numpy as np
+import psycopg2
+
+# database
+conn = psycopg2.connect(
+    database="mapBot",
+    user="postgres",
+    password="54321",
+    host="localhost",
+    port=5432
+)
+
+# testing sql query
+print("connected to postgres SQL DB")
+cur = conn.cursor()
+data = cur.execute("SELECT map_name, download_link FROM maps")
+xyz = cur.fetchall()
+
+vsmaps4 = np.array(xyz)
 
 vsmaps = np.array(["1. 2 Evil Eyes: http://www.spirit.hosted.nfoservers.com/2evileyes.rar",
                    "2. 25 To Life: http://www.spirit.hosted.nfoservers.com/25tolife.rar",

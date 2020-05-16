@@ -3,6 +3,7 @@ import os
 import random
 from datetime import datetime
 
+import psycopg2
 import pytz
 from discord.ext import commands
 
@@ -11,24 +12,44 @@ import available_maps
 
 # discord api
 vsMapList = available_maps.vsmaps
-client = commands.Bot(command_prefix='.')
+bot = commands.Bot(command_prefix='.')
+
+tdb = available_maps.vsmaps4
+print(tdb[0])
 
 
 # load_dotenv()
 # TOKEN = os.getenv('DISCORD_TOKEN')
 
 # signal for bot online
-@client.event
+@bot.event
 async def on_ready():
     print('bot is ready')
 
 
-# variables
-hosts = ["howlcipher", "MaShiro", "Merim", "$antic $pirit", "Sirius", "Cody", "KrayOn", "YourNameHere", "liqouridge",
-         "PFletchJ", "shuppy30"]
+# database
+conn = psycopg2.connect(
+    database="mapBot",
+    user="postgres",
+    password="54321",
+    host="localhost",
+    port=5432
+)
+
+# testing sql query
+print("connected to postgres SQL DB")
+cur = conn.cursor()
+data = cur.execute("SELECT * FROM maps")
+stuff = cur.fetchall()
 
 
-# base Map
+# testing database
+@bot.command(name='testdb', help='database test')
+async def databasetest(ctx):
+    await ctx.send(stuff[1][2])
+
+
+# map class
 class Maps:
     def __init__(self, m1: str, m2: str, m3: str, ct: str):
         self.m1 = m1
@@ -37,23 +58,25 @@ class Maps:
         self.ct = ct
 
 
-# base host
+# host class
 class Host:
     def __init__(self, host: str):
         self.host = host
 
 
-# base ct
+# time class
 class sTime:
     def __init__(self, ct: str):
         self.ct = ct
 
 
-# Null Object
+# initialized variables
 currentMaps = Maps("MAP1: is unset", "MAP2: is unset", "MAP3: is unset", "No time set")
 setTime = sTime("no time set")
 hostTime = sTime("")
 currentHost = Host("No host set")
+hosts = ["howlcipher", "MaShiro", "Merim", "$antic $pirit", "Sirius", "Cody", "KrayOn", "YourNameHere", "liqouridge",
+         "PFletchJ", "shuppy30"]
 
 
 # time
@@ -71,15 +94,16 @@ def randomNumber(x):
 
 # random number
 def randomMaps():
-    maptotal = 65
+    maptotal = 1
     mapNums = {"map1": randomNumber(maptotal),
                "map2": randomNumber(maptotal),
                "map3": randomNumber(maptotal)}
     return mapNums
 
 
+
 # set maps to be used with time stamp
-@client.command(name='setMaps', help='Sets the maps to be played - MUST BE HOST or HIGHER')
+@bot.command(name='setMaps', help='Sets the maps to be played - MUST BE HOST or HIGHER')
 @commands.has_role("testRole")
 async def Mapset(ctx):
     mn = randomMaps()
@@ -88,21 +112,24 @@ async def Mapset(ctx):
     currentMaps.m2 = vsMapList[mn["map2"]]
     currentMaps.m3 = vsMapList[mn["map3"]]
     setTime.ct = currentTime()
-    await ctx.send("@every1 maps are set at " + setTime.ct + '👍')
+    mapSetMessage = "@every1 maps are set at " + setTime.ct + '👍'
+    await ctx.send(mapSetMessage)
 
 
 # display the maps selected and what time they were set
-@client.command(name='displayMaps', help='Displays the current maps to be played')
+@bot.command(name='displayMaps', help='Displays the current maps to be played')
 async def displayMaps(ctx):
-    await ctx.send(
-        "To host copy the command: mm_dedicated_force_servers 74.91.124.232:27025 and paste into your in game console.")
-    await ctx.send(
-        "Tonight's maps are: \nMAP1: " + currentMaps.m1 + "\nMAP2: " + currentMaps.m2 + "\nMAP3: " + currentMaps.m3 + "\nMaps set at: " + setTime.ct)
-    await ctx.send("The host will be " + currentHost.host)
+    hostHelp = "To host copy the command: mm_dedicated_force_servers 74.91.124.232:27025 and paste into your in game console."
+    tnMaps = "Tonight's maps are: \nMAP1: " + currentMaps.m1 + "\nMAP2: " + currentMaps.m2 + "\nMAP3: " + currentMaps.m3 + "\nMaps set at: " + setTime.ct
+    cHost = "The host will be " + currentHost.host
+
+    await ctx.send(hostHelp)
+    await ctx.send(tnMaps)
+    await ctx.send(cHost)
 
 
 # display all maps
-@client.command(name='vsMaps', help='Displays all VS Maps - MUST BE HOST or HIGHER')
+@bot.command(name='vsMaps', help='Displays all VS Maps - MUST BE HOST or HIGHER')
 @commands.has_role("testRole")
 async def vsMaps(ctx):
     for x, y in vsMapList.items():
@@ -110,35 +137,42 @@ async def vsMaps(ctx):
 
 
 # displays time and game time
-@client.command(name="gameTime", help="Displays current time and game time")
+@bot.command(name="gameTime", help="Displays current time and game time")
 async def time(ctx):
     # use NY time zone
+
+    gameTime = "```Game time is at 21:30:00 EASTERN TIMEZONE```"
     cur_time = currentTime()
     await ctx.send(cur_time)
-    await ctx.send("```Game time is at 21:30:00 EASTERN TIMEZONE```")
+    await ctx.send(gameTime)
 
 
 # host assigned
-@client.command(name='setHost', help='sets the host - MUST BE HOST or HIGHER')
+@bot.command(name='setHost', help='sets the host - MUST BE HOST or HIGHER')
 @commands.has_role("testRole")
 async def setHost(ctx, user):
     # if user is in host list
     if (user in hosts):
         currentHost.host = user
         hostTime.ct = currentTime()
-        await ctx.send(currentHost.host + " will host")
-        await ctx.send("set at " + hostTime.ct)
+
+        theHost = currentHost.host + " will host"
+        hostSetAt = "set at " + hostTime.ct
+
+        await ctx.send(theHost)
+        await ctx.send(hostSetAt)
     else:
         currentHost.host = "no host set"
         await ctx.send(currentHost.host)
 
 
 # host display hosts
-@client.command(name='displayHosts', help='displays possible hosts')
+@bot.command(name='displayHosts', help='displays possible hosts')
 async def distplayHosts(ctx):
     await ctx.send(hosts)
 
 
 # token
 token = os.environ.get("DISCORD_BOT_SECRET")
-client.run("NzA4MDIyMDc2MDgyMDk0MTMx.XrSKZQ.6xT6tIRSXuMAM2yNictyVoLRJr0")
+# hide the token when committing
+bot.run("")
