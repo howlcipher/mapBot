@@ -1,0 +1,31 @@
+--create the table
+
+CREATE TABLE user_account(
+	user_id SERIAL PRIMARY KEY,
+	username VARCHAR(50) UNIQUE NOT NULL,
+	bot_admin BOOLEAN,
+	server_role varchar(25) NOT NULL,
+	create_on TIMESTAMP NOT NULL
+)
+
+
+
+
+--Inserting users into data base id, username, bot_admin, server role, created on
+--(int, string, boolean, string,  CURRENT_TIMESTAMP)
+INSERT INTO user_account(user_id, username, bot_admin, server_role, created_on)
+VALUES
+(1, '$antic $pirit',TRUE ,'ADMIN',CURRENT_TIMESTAMP ),
+(2, 'Codey', TRUE , 'MODERATOR', CURRENT_TIMESTAMP),
+(3, 'KrayOn', TRUE , 'MODERATOR', CURRENT_TIMESTAMP),
+(4, 'Sirius', TRUE , 'MODERATOR', CURRENT_TIMESTAMP),
+(5, 'howlcipher', TRUE , 'HOST', CURRENT_TIMESTAMP),
+(6, 'Merim', FALSE , 'HOST', CURRENT_TIMESTAMP),
+(7, 'MaShiro', FALSE , 'HOST', CURRENT_TIMESTAMP),
+(8, 'Richitzer', FALSE , 'HOST', CURRENT_TIMESTAMP),
+(9, 'PFlethJ', FALSE , 'HOST', CURRENT_TIMESTAMP),
+(10, 'shuppy30', FALSE , 'HOST', CURRENT_TIMESTAMP),
+(11, 'liqouridge', FALSE , 'HOST', CURRENT_TIMESTAMP)
+(12, 'YourNameHere', FALSE , 'OG', CURRENT_TIMESTAMP),
+(13, 'Ayydee', FALSE , 'OG', CURRENT_TIMESTAMP),
+(14, 'Ac3N0ob', FALSE , 'OG', CURRENT_TIMESTAMP)
