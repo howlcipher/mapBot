@@ -192,4 +192,4 @@ async def distplayHosts(ctx):
 # token
 token = os.environ.get("DISCORD_BOT_SECRET")
 # hide the token when committing
-bot.run("NzA4MDIyMDc2MDgyMDk0MTMx.Xrb7LQ.ZEUsNxTdF8uOSaiY6tkimhmMuOk")
+bot.run("INSERT TOKEN HERE")
