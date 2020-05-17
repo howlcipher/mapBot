@@ -22,7 +22,7 @@
   <li>gameTime - Displays current time and game time</li>
   <li>help - Displays command help</li>
   <li>setHost - Sets the host</li>
-  <li>setMapsRandom - Sets three random maps</li>
+  <li>setMapsRandom - Sets three random maps (use arguments of 3, 4, or 5 to pull from a map_count of the same number)</li>
   <li>vsMaps - Displays all vs maps</li>
 </ul>
 
