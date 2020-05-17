@@ -3,19 +3,20 @@ import os
 import random
 from datetime import datetime
 
-import psycopg2
 import pytz
 from discord.ext import commands
 
 # other files
 import available_maps
+import users
 
 # discord api
 vsMapList = available_maps.vsmaps
 bot = commands.Bot(command_prefix='.')
 
-tdb = available_maps.vsmaps4
-print(tdb[0])
+# connect to databases of maps and useraccounts
+vsmapsDB = available_maps.vsmapsdb
+usersDB = users.userdb
 
 
 # load_dotenv()
@@ -27,26 +28,13 @@ async def on_ready():
     print('bot is ready')
 
 
-# database
-conn = psycopg2.connect(
-    database="mapBot",
-    user="postgres",
-    password="54321",
-    host="localhost",
-    port=5432
-)
 
-# testing sql query
-print("connected to postgres SQL DB")
-cur = conn.cursor()
-data = cur.execute("SELECT * FROM maps")
-stuff = cur.fetchall()
 
 
 # testing database
 @bot.command(name='testdb', help='database test')
 async def databasetest(ctx):
-    await ctx.send(stuff[1][2])
+    await ctx.send(vsmapsDB[1][2])
 
 
 # map class
@@ -75,9 +63,6 @@ currentMaps = Maps("MAP1: is unset", "MAP2: is unset", "MAP3: is unset", "No tim
 setTime = sTime("no time set")
 hostTime = sTime("")
 currentHost = Host("No host set")
-hosts = ["howlcipher", "MaShiro", "Merim", "$antic $pirit", "Sirius", "Cody", "KrayOn", "YourNameHere", "liqouridge",
-         "PFletchJ", "shuppy30"]
-
 
 # time
 def currentTime():
@@ -94,7 +79,7 @@ def randomNumber(x):
 
 # random number
 def randomMaps():
-    maptotal = 1
+    maptotal = len(vsmapsDB)
     mapNums = {"map1": randomNumber(maptotal),
                "map2": randomNumber(maptotal),
                "map3": randomNumber(maptotal)}
@@ -103,14 +88,14 @@ def randomMaps():
 
 
 # set maps to be used with time stamp
-@bot.command(name='setMaps', help='Sets the maps to be played - MUST BE HOST or HIGHER')
-@commands.has_role("testRole")
-async def Mapset(ctx):
+@bot.command(name='setMapsRandom', help='Sets the maps to be played - RANDOM')
+async def setMapsRandom(ctx):
     mn = randomMaps()
 
-    currentMaps.m1 = vsMapList[mn["map1"]]
-    currentMaps.m2 = vsMapList[mn["map2"]]
-    currentMaps.m3 = vsMapList[mn["map3"]]
+    currentMaps.m1 = vsmapsDB[mn["map1"]][0] + ": " + vsmapsDB[mn["map1"]][1]
+    currentMaps.m2 = vsmapsDB[mn["map2"]][0] + ": " + vsmapsDB[mn["map2"]][1]
+    currentMaps.m3 = vsmapsDB[mn["map3"]][0] + ": " + vsmapsDB[mn["map3"]][1]
+
     setTime.ct = currentTime()
     mapSetMessage = "@every1 maps are set at " + setTime.ct + '👍'
     await ctx.send(mapSetMessage)
@@ -129,11 +114,13 @@ async def displayMaps(ctx):
 
 
 # display all maps
-@bot.command(name='vsMaps', help='Displays all VS Maps - MUST BE HOST or HIGHER')
-@commands.has_role("testRole")
+@bot.command(name='vsMaps', help='Displays all VS Maps')
 async def vsMaps(ctx):
-    for x, y in vsMapList.items():
-        await ctx.send(x + ":" + y)
+    # display all maps - limit of 2000 characters on discord
+    await ctx.send(vsmapsDB[1:20])
+    await ctx.send(vsmapsDB[21:40])
+    await ctx.send(vsmapsDB[41:60])
+    await ctx.send(vsmapsDB[61:])
 
 
 # displays time and game time
@@ -148,11 +135,11 @@ async def time(ctx):
 
 
 # host assigned
-@bot.command(name='setHost', help='sets the host - MUST BE HOST or HIGHER')
-@commands.has_role("testRole")
+@bot.command(name='setHost', help='sets the host')
+# @commands.has_role("testRole")
 async def setHost(ctx, user):
-    # if user is in host list
-    if (user in hosts):
+    # # if user is in host list
+    if (user in usersDB):
         currentHost.host = user
         hostTime.ct = currentTime()
 
@@ -169,10 +156,11 @@ async def setHost(ctx, user):
 # host display hosts
 @bot.command(name='displayHosts', help='displays possible hosts')
 async def distplayHosts(ctx):
-    await ctx.send(hosts)
+    await ctx.send("USERNAME - BOT ADMIN - SERVER ROLE")
+    await ctx.send(usersDB)
 
 
 # token
 token = os.environ.get("DISCORD_BOT_SECRET")
 # hide the token when committing
-bot.run(TOKEN HERE)
+bot.run("TOKEN GOES HERE")
