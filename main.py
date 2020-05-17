@@ -11,7 +11,7 @@ import available_maps
 import users
 
 # discord api
-vsMapList = available_maps.vsmapsdb
+vsMapList = available_maps.vsmaps
 bot = commands.Bot(command_prefix='.')
 
 # connect to databases of maps and useraccounts
@@ -26,6 +26,16 @@ usersDB = users.userdb
 @bot.event
 async def on_ready():
     print('bot is ready')
+
+
+
+
+
+# testing database
+@bot.command(name='testdb', help='database test')
+async def databasetest(ctx):
+    await ctx.send(vsmapsDB[1][2])
+
 
 # map class
 class Maps:
@@ -125,8 +135,7 @@ async def time(ctx):
 
 
 # host assigned
-@bot.command(name='setHost',
-             help='sets the host - type the username after command, if not in the host database no host will be set')
+@bot.command(name='setHost', help='sets the host')
 # @commands.has_role("testRole")
 async def setHost(ctx, user):
     # # if user is in host list
@@ -145,7 +154,7 @@ async def setHost(ctx, user):
 
 
 # host display hosts
-@bot.command(name='displayHosts', help='Displays possible hosts')
+@bot.command(name='displayHosts', help='displays possible hosts')
 async def distplayHosts(ctx):
     await ctx.send("USERNAME - BOT ADMIN - SERVER ROLE")
     await ctx.send(usersDB)
@@ -154,4 +163,4 @@ async def distplayHosts(ctx):
 # token
 token = os.environ.get("DISCORD_BOT_SECRET")
 # hide the token when committing
-bot.run("TOKEN HERE")
+bot.run("TOKEN GOES HERE")
