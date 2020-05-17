@@ -10,15 +10,35 @@ conn = psycopg2.connect(
     port=5432
 )
 
-# testing sql query
+# connecting to SQL
 print("connected to postgres SQL MAPS DB")
-cur = conn.cursor()
-data = cur.execute("SELECT map_name, download_link FROM maps ORDER BY map_id")
-maps = cur.fetchall()
+# select all maps
+allMaps = conn.cursor()
+data = allMaps.execute("SELECT map_name, download_link, map_count FROM maps ORDER BY map_id")
+maps = allMaps.fetchall()
 
+# select all maps with map_count = 3
+maps3 = conn.cursor()
+data3 = maps3.execute("SELECT map_name, download_link, map_count FROM maps WHERE map_count = 3 ORDER BY map_id")
+mapsThree = maps3.fetchall()
+
+# select all maps with map_count = 4
+maps4 = conn.cursor()
+data4 = maps4.execute("SELECT map_name, download_link, map_count FROM maps WHERE map_count = 4 ORDER BY map_id")
+mapsFour = maps4.fetchall()
+
+# select all maps with map_count = 5
+maps5 = conn.cursor()
+data5 = maps5.execute("SELECT map_name, download_link, map_count FROM maps WHERE map_count = 5 ORDER BY map_id")
+mapsFive = maps5.fetchall()
+
+# turn query into array
+vsmapsdb3 = np.array(mapsThree)
+vsmapsdb4 = np.array(mapsFour)
+vsmapsdb5 = np.array(mapsFive)
 vsmapsdb = np.array(maps)
 
-# USING DB
+# USING DB - not used
 # vsmaps = np.array(["1. 2 Evil Eyes: http://www.spirit.hosted.nfoservers.com/2evileyes.rar",
 #                    "2. 25 To Life: http://www.spirit.hosted.nfoservers.com/25tolife.rar",
 #                    "3. Back To School: http://www.spirit.hosted.nfoservers.com/bts_l4d2.rar",

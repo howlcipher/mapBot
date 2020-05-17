@@ -15,17 +15,26 @@ vsMapList = available_maps.vsmapsdb
 bot = commands.Bot(command_prefix='.')
 
 # connect to databases of maps and useraccounts
+# maps db
+
+# all maps
 vsmapsDB = available_maps.vsmapsdb
+# maps with 3
+mappool3 = available_maps.vsmapsdb3
+# maps with 4
+mappool4 = available_maps.vsmapsdb4
+# maps with 5
+mappool5 = available_maps.vsmapsdb5
+
+# users db
 usersDB = users.userdb
 
-
-# load_dotenv()
-# TOKEN = os.getenv('DISCORD_TOKEN')
 
 # signal for bot online
 @bot.event
 async def on_ready():
     print('bot is ready')
+
 
 # map class
 class Maps:
@@ -68,23 +77,52 @@ def randomNumber(x):
 
 
 # random number
-def randomMaps():
-    maptotal = len(vsmapsDB)
-    mapNums = {"map1": randomNumber(maptotal),
-               "map2": randomNumber(maptotal),
-               "map3": randomNumber(maptotal)}
+def randomMaps(mapTotal):
+    mapNums = {"map1": randomNumber(mapTotal),
+               "map2": randomNumber(mapTotal),
+               "map3": randomNumber(mapTotal)}
     return mapNums
 
 
+# setting the map
+def setMap(mapcount=None):
+    if (mapcount is not None):
+        # set map
+        mapcount = int(mapcount)
+        if (mapcount == 3):
+            mn = randomMaps(len(mappool3) - 1)
+            return mappool3[mn["map1"]][0] + ": " + mappool3[mn["map1"]][1] + "MAP COUNT:" + mappool3[mn["map1"]][2]
+        elif (mapcount == 4):
+            mn = randomMaps(len(mappool4) - 1)
+            return mappool4[mn["map1"]][0] + ": " + mappool4[mn["map1"]][1] + "MAP COUNT:" + mappool4[mn["map1"]][2]
+        elif (mapcount == 5):
+            mn = randomMaps(len(mappool5) - 1)
+            return mappool5[mn["map1"]][0] + ": " + mappool5[mn["map1"]][1] + "MAP COUNT:" + mappool5[mn["map1"]][2]
+        else:
+            mn = randomMaps(len(vsmapsDB) - 1)
+            return vsmapsDB[mn["map1"]][0] + ": " + vsmapsDB[mn["map1"]][1] + "MAP COUNT:" + vsmapsDB[mn["map1"]][2]
+    else:
+        mn = randomMaps(len(vsmapsDB) - 1)
+        return vsmapsDB[mn["map1"]][0] + ": " + vsmapsDB[mn["map1"]][1] + "MAP COUNT:" + vsmapsDB[mn["map1"]][2]
 
-# set maps to be used with time stamp
-@bot.command(name='setMapsRandom', help='Sets the maps to be played - RANDOM')
-async def setMapsRandom(ctx):
-    mn = randomMaps()
 
-    currentMaps.m1 = vsmapsDB[mn["map1"]][0] + ": " + vsmapsDB[mn["map1"]][1]
-    currentMaps.m2 = vsmapsDB[mn["map2"]][0] + ": " + vsmapsDB[mn["map2"]][1]
-    currentMaps.m3 = vsmapsDB[mn["map3"]][0] + ": " + vsmapsDB[mn["map3"]][1]
+# sets maps to display if none picks randomly
+@bot.command(name='setMapsRandom', help='Sets the maps to be played - RANDOM Modifiers(3,4,5)')
+async def setMapsRandom(ctx, mapcount1=None, mapcount2=None, mapcount3=None):
+    m1 = mapcount1
+    m2 = mapcount2
+    m3 = mapcount3
+
+    if (mapcount1 is not None):
+        m1 = int(mapcount1)
+    if (mapcount2 is not None):
+        m2 = int(mapcount2)
+    if (mapcount3 is not None):
+        m3 = (mapcount3)
+
+    currentMaps.m1 = setMap(m1)
+    currentMaps.m2 = setMap(m2)
+    currentMaps.m3 = setMap(m3)
 
     setTime.ct = currentTime()
     mapSetMessage = "@every1 maps are set at " + setTime.ct + '👍'
@@ -95,7 +133,8 @@ async def setMapsRandom(ctx):
 @bot.command(name='displayMaps', help='Displays the current maps to be played')
 async def displayMaps(ctx):
     hostHelp = "To host copy the command: mm_dedicated_force_servers 74.91.124.232:27025 and paste into your in game console."
-    tnMaps = "Tonight's maps are: \nMAP1: " + currentMaps.m1 + "\nMAP2: " + currentMaps.m2 + "\nMAP3: " + currentMaps.m3 + "\nMaps set at: " + setTime.ct
+    tnMaps = "Tonight's maps are: \nMAP1: " + str(currentMaps.m1) + "\nMAP2: " + str(currentMaps.m2) + "\nMAP3: " + str(
+        currentMaps.m3) + "\nMaps set at: " + setTime.ct
     cHost = "The host will be " + currentHost.host
 
     await ctx.send(hostHelp)
@@ -125,7 +164,7 @@ async def time(ctx):
 
 
 # host assigned
-@bot.command(name='setHost', help='sets the host - type the username after command, if not in the user_account database no host is set')
+@bot.command(name='setHost', help='sets the host if not in the user_account database no host is set')
 # @commands.has_role("testRole")
 async def setHost(ctx, user):
     # # if user is in host list
@@ -153,4 +192,4 @@ async def distplayHosts(ctx):
 # token
 token = os.environ.get("DISCORD_BOT_SECRET")
 # hide the token when committing
-bot.run("")
+bot.run("NzA4MDIyMDc2MDgyMDk0MTMx.Xrb7LQ.ZEUsNxTdF8uOSaiY6tkimhmMuOk")
