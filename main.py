@@ -1,8 +1,15 @@
+# mapBot
+# By: William Elias (howlcipher)
+# Repository: https://github.com/howlcipher/mapBot
+# LinkedIn: https://www.linkedin.com/in/wylelias/
+# Created 05/2020
+
 # imports
 import os
 import random
 from datetime import datetime
 
+import discord
 import pytz
 from discord.ext import commands
 
@@ -13,6 +20,7 @@ import users
 # discord api
 vsMapList = available_maps.vsmapsdb
 bot = commands.Bot(command_prefix='.')
+bot.remove_command('help')
 
 # connect to databases of maps and useraccounts
 # maps db
@@ -31,10 +39,10 @@ usersDB = users.userdb
 
 
 # signal for bot online
+
 @bot.event
 async def on_ready():
-    print('bot is ready')
-
+    print(f'Bot Name: {bot.user.name} - ID: {bot.user.id} is ready')
 
 # map class
 class Maps:
@@ -85,7 +93,7 @@ def randomMaps(mapTotal):
 
 
 # setting the map
-def setMap(mapcount=None):
+def setMapRandom(mapcount=None):
     if (mapcount is not None):
         # set map
         mapcount = int(mapcount)
@@ -106,6 +114,38 @@ def setMap(mapcount=None):
         return vsmapsDB[mn["map1"]][0] + ": " + vsmapsDB[mn["map1"]][1] + "MAP COUNT:" + vsmapsDB[mn["map1"]][2]
 
 
+# commands
+# custom help
+@bot.command(pass_context=True)
+async def help(ctx):
+    embed = discord.Embed(
+        colour=discord.Colour.green(),
+        title="HELP COMMANDS FOR USING THE MAPBOT",
+        description="How to use mapBot"
+    )
+    embed.set_author(name='mapBot')
+    # map help
+    embed.add_field(name='.addMap', value='adds a map to the database !!COMING SOON!!', inline=False)
+    embed.add_field(name='.displayMaps', value='Displays current maps to be played', inline=False)
+    embed.add_field(name='.setMaps', value='Sets specific maps !!COMING SOON!!', inline=False)
+    embed.add_field(name='.setMapsRandom', value='Sets 3 random maps - 3,4,5 can be used to limit the number of rounds',
+                    inline=False)
+    embed.add_field(name='.vsMaps', value='Displays all VS maps', inline=False)
+
+    # user help
+    embed.add_field(name='.addUser', value='Adds user_account to the database !!COMING SOON!!', inline=False)
+    embed.add_field(name='.displayHosts', value='Displays possible hosts', inline=False)
+    embed.add_field(name='.setHost', value='Sets the host if not in the user_account database no host is set',
+                    inline=False)
+
+    # misc help
+    embed.add_field(name='.gameTime', value='Displays current time and game time', inline=False)
+
+    # dm the user asking for help
+    author = ctx.message.author
+    await author.send(author, embed=embed)
+
+
 # sets maps to display if none picks randomly
 @bot.command(name='setMapsRandom', help='Sets the maps to be played - RANDOM Modifiers(3,4,5)')
 async def setMapsRandom(ctx, mapcount1=None, mapcount2=None, mapcount3=None):
@@ -118,15 +158,33 @@ async def setMapsRandom(ctx, mapcount1=None, mapcount2=None, mapcount3=None):
     if (mapcount2 is not None):
         m2 = int(mapcount2)
     if (mapcount3 is not None):
-        m3 = (mapcount3)
+        m3 = int(mapcount3)
 
-    currentMaps.m1 = setMap(m1)
-    currentMaps.m2 = setMap(m2)
-    currentMaps.m3 = setMap(m3)
+    currentMaps.m1 = setMapRandom(m1)
+    currentMaps.m2 = setMapRandom(m2)
+    currentMaps.m3 = setMapRandom(m3)
 
     setTime.ct = currentTime()
-    mapSetMessage = "@every1 maps are set at " + setTime.ct + '👍'
+    mapSetMessage = "@everyone maps are set at " + setTime.ct + '👍'
     await ctx.send(mapSetMessage)
+
+
+# sets maps to specific choices
+@bot.command(name='setMaps', help='Sets the maps to be played !!COMING SOON!!')
+async def setMaps(ctx):
+    await ctx.send("setMaps Message")
+
+
+# adds map to database
+@bot.command(name='addMap', help='adds maps to the database !!COMING SOON!!')
+async def setMaps(ctx):
+    await ctx.send("addMap Message")
+
+
+# adds user_account to database
+@bot.command(name='addUser', help='adds user_account to the database !!COMING SOON!!')
+async def setMaps(ctx):
+    await ctx.send("addUser Message")
 
 
 # display the maps selected and what time they were set
@@ -136,20 +194,21 @@ async def displayMaps(ctx):
     tnMaps = "Tonight's maps are: \nMAP1: " + str(currentMaps.m1) + "\nMAP2: " + str(currentMaps.m2) + "\nMAP3: " + str(
         currentMaps.m3) + "\nMaps set at: " + setTime.ct
     cHost = "The host will be " + currentHost.host
-
-    await ctx.send(hostHelp)
-    await ctx.send(tnMaps)
-    await ctx.send(cHost)
+    author = ctx.message.author
+    await author.send(hostHelp)
+    await author.send(tnMaps)
+    await author.send(cHost)
 
 
 # display all maps
 @bot.command(name='vsMaps', help='Displays all VS Maps')
 async def vsMaps(ctx):
     # display all maps - limit of 2000 characters on discord
-    await ctx.send(vsmapsDB[1:20])
-    await ctx.send(vsmapsDB[21:40])
-    await ctx.send(vsmapsDB[41:60])
-    await ctx.send(vsmapsDB[61:])
+    author = ctx.message.author
+    await author.send(vsmapsDB[1:20])
+    await author.send(vsmapsDB[21:40])
+    await author.send(vsmapsDB[41:60])
+    await author.send(vsmapsDB[61:])
 
 
 # displays time and game time
@@ -159,8 +218,9 @@ async def time(ctx):
 
     gameTime = "```Game time is at 21:30:00 EASTERN TIMEZONE```"
     cur_time = currentTime()
-    await ctx.send(cur_time)
-    await ctx.send(gameTime)
+    author = ctx.message.author
+    await author.send(cur_time)
+    await author.send(gameTime)
 
 
 # host assigned
@@ -185,11 +245,12 @@ async def setHost(ctx, user):
 # host display hosts
 @bot.command(name='displayHosts', help='Displays possible hosts')
 async def distplayHosts(ctx):
-    await ctx.send("USERNAME - BOT ADMIN - SERVER ROLE")
-    await ctx.send(usersDB)
+    author = ctx.message.author
+    await author.send("USERNAME - BOT ADMIN - SERVER ROLE")
+    await author.send(usersDB)
 
 
 # token
 token = os.environ.get("DISCORD_BOT_SECRET")
 # hide the token when committing
-bot.run("NzA4MDIyMDc2MDgyMDk0MTMx.Xrb7LQ.ZEUsNxTdF8uOSaiY6tkimhmMuOk")
+bot.run("")
