@@ -8,7 +8,6 @@
 import os
 import random
 from datetime import datetime
-
 import discord
 import pytz
 from discord.ext import commands
