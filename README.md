@@ -16,14 +16,27 @@
 
 
 <h2>Current Commands Available with the prefix of "."</h2>
+<h3>USER COMMANDS</h3>
 <ul>
   <li>displayHost - Displays all possible hosts</li>
-  <li>displayMaps -  Displays the current maps to be played</li>
-  <li>gameTime - Displays current time and game time</li>
-  <li>help - Displays command help</li>
   <li>setHost - Sets the host</li>
+</ul>
+<h3>MAP COMMANDS</h3>
+<ul>
+  <li>displayMaps -  Displays the current maps to be played</li>
   <li>setMapsRandom - Sets three random maps (use arguments of 3, 4, or 5 to pull from a map_count of the same number)</li>
   <li>vsMaps - Displays all vs maps</li>
+</ul>
+<h3>CLEAR COMMANDS</h3>
+<ul>
+  <li>clearHost - Clears the host entry</li>
+  <li>clearMaps - Clears the maps</li>
+  <li>clearAll  - Clears maps and the host</li>
+</ul>
+<h3>MISC COMMANDS</h3>
+<ul>
+  <li>gameTime - Displays current time and game time</li>
+  <li>help - Displays command help</li>
 </ul>
 
 <h2>Resources:</h2><ul>
