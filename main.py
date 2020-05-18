@@ -6,13 +6,12 @@
 
 # imports
 import os
-
 import discord
 from discord.ext import commands
 
+#custom modules
 from botTime import botTime
 from clear import clear
-# other files
 from maps import availableMaps, mapCommands
 from users import usersCommands
 
