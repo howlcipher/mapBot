@@ -10,9 +10,9 @@ import os
 import discord
 from discord.ext import commands
 
+# custom modules
 from botTime import botTime
 from clear import clear
-# other files
 from maps import availableMaps, mapCommands
 from users import usersCommands
 
@@ -39,7 +39,6 @@ currentHost = usersCommands.Host("No host set")
 # custom help
 @bot.command(pass_context=True)
 async def help(ctx):
-    async def help(ctx):
         embed = discord.Embed(
             colour=discord.Colour.green(),
             title="HELP COMMANDS FOR USING THE MAPBOT",
@@ -61,12 +60,17 @@ async def help(ctx):
         embed.add_field(name='.setHost', value='Sets the host if not in the user_account database no host is set',
                         inline=False)
 
+        embed.add_field(name='.clearHost', value='Clears the host', inline=False)
+        embed.add_field(name='.clearMaps', value='Clears the maps', inline=False)
+        embed.add_field(name='.clearAll', value='Clears the maps and host', inline=False)
+
         # misc help
-        embed.add_field(name='.gameTime', value='Displays current botTime and game botTime', inline=False)
+        embed.add_field(name='.gameTime', value='Displays current time and game time', inline=False)
 
         # dm the user asking for help
         author = ctx.message.author
         await author.send(author, embed=embed)
+
 
 # sets maps to display if none picks randomly
 @bot.command(name='setMapsRandom', help='Sets the maps to be played - RANDOM Modifiers(3,4,5)')
@@ -140,11 +144,28 @@ async def distplayHosts(ctx):
 
 # clears the host
 @bot.command(name='clearHost', help='clears the host')
-async def deleteHosts(ctx):
+async def clearHosts(ctx):
+    hostTime.ct = botTime.sTime("")
     clear.clearHost(currentHost)
+    await ctx.send("Host is reset")
+
+
+@bot.command(name='clearMaps', help='clears the maps')
+async def clearMaps(ctx):
+    hostTime.ct = botTime.sTime("")
+    clear.clearMaps(currentMaps)
+    await ctx.send("Maps are reset")
+
+
+@bot.command(name='clearAll', help='clears the host and maps')
+async def clearAll(ctx):
+    hostTime.ct = botTime.sTime("")
+    clear.clearHost(currentHost)
+    clear.clearMaps(currentMaps)
+    await ctx.send("Maps and Host are reset")
 
 
 # token
 token = os.environ.get("DISCORD_BOT_SECRET")
 # hide the token when committing
-bot.run("TOKEN")
+bot.run("NzA4MDIyMDc2MDgyMDk0MTMx.XsGm_Q.vZ4G5UZxhbfmaLMEmfx5vjMAvBI")
