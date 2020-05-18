@@ -168,4 +168,4 @@ async def clearAll(ctx):
 # token
 token = os.environ.get("DISCORD_BOT_SECRET")
 # hide the token when committing
-bot.run("NzA4MDIyMDc2MDgyMDk0MTMx.XsGm_Q.vZ4G5UZxhbfmaLMEmfx5vjMAvBI")
+bot.run("TOKEN")
