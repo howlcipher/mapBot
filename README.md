@@ -4,7 +4,6 @@
 
 <h2>Libraries Used In Project</h2>
 <ul>
-<li>import os</li>
 <li>import random</li>
 <li>from datetime import datetime</li>
 <li>import pytz</li>
