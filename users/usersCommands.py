@@ -14,6 +14,14 @@ conn = psycopg2.connect(
 print("connected to postgres SQL USER_ACCOUNT DB")
 cur = conn.cursor()
 data = cur.execute("SELECT username, bot_admin, server_role FROM user_account ORDER BY user_id")
-maps = cur.fetchall()
+userDB = np.array(cur.fetchall())
 
-userdb = np.array(maps)
+
+#
+# userdb = np.array(users)
+
+
+# host class
+class Host:
+    def __init__(self, host: str):
+        self.host = host
