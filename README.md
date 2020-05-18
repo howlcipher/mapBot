@@ -1,5 +1,5 @@
 # mapBot
-<h2>This is a Discord Bot that utilizes POSTGRES SQL and DISCORD.py to create a bot</h2>
+This is a Discord Bot that utilizes POSTGRES SQL and DISCORD.py to create a bot</h2>
 <p>The bot helps in the selection of maps and host.  It also is capable of displaying the information so users can quickly reference the nights current maps</p>
 
 <h2>Libraries Used In Project</h2>
