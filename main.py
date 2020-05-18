@@ -185,4 +185,4 @@ async def clearAll(ctx):
 
 
 # hide the token when committing
-bot.run("NzA4MDIyMDc2MDgyMDk0MTMx.XsL03A.W3xlW4V8hTyqaSpTPrZgE1JzZ-Y")
+bot.run("BOT TOKEN")
