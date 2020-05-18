@@ -164,8 +164,5 @@ async def clearAll(ctx):
     clear.clearMaps(currentMaps)
     await ctx.send("Maps and Host are reset")
 
-
-# token
-token = os.environ.get("DISCORD_BOT_SECRET")
 # hide the token when committing
 bot.run("TOKEN")
