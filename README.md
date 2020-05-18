@@ -5,11 +5,10 @@ This is a Discord Bot that utilizes POSTGRES SQL and DISCORD.py to create a bot<
 <h2>Libraries Used In Project</h2>
 <ul>
 <li>random</li>
-<li>datetime</li>
+<li>from datetime import datetime</li>
 <li>pytz</li>
-<li>numpy</li>
-<li>psycopg2</li>
-  
+<li>import numpy as np</li>
+<li>import psycopg2</li>
 <li>from discord.ext import commands</li>
 </ul>
 
