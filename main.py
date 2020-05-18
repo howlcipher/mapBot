@@ -5,7 +5,6 @@
 # Created 05/2020
 
 # imports
-import os
 
 import discord
 from discord.ext import commands
@@ -39,37 +38,39 @@ currentHost = usersCommands.Host("No host set")
 # custom help
 @bot.command(pass_context=True)
 async def help(ctx):
-        embed = discord.Embed(
-            colour=discord.Colour.green(),
-            title="HELP COMMANDS FOR USING THE MAPBOT",
-            description="How to use mapBot"
-        )
-        embed.set_author(name='mapBot')
-        # map help
-        embed.add_field(name='.addMap', value='adds a map to the database !!COMING SOON!!', inline=False)
-        embed.add_field(name='.displayMaps', value='Displays current maps to be played', inline=False)
-        embed.add_field(name='.setMaps', value='Sets specific maps !!COMING SOON!!', inline=False)
-        embed.add_field(name='.setMapsRandom',
-                        value='Sets 3 random maps - 3,4,5 can be used to limit the number of rounds',
-                        inline=False)
-        embed.add_field(name='.vsMaps', value='Displays all VS maps', inline=False)
+    embed = discord.Embed(
+        colour=discord.Colour.green(),
+        title="HELP COMMANDS FOR USING THE MAPBOT",
+        description="How to use mapBot"
+    )
+    embed.set_author(name='mapBot')
+    # map help
+    embed.add_field(name='.addMap', value='adds a map to the database !!COMING SOON!!', inline=False)
+    embed.add_field(name='.displayMaps', value='Displays current maps to be played', inline=False)
+    embed.add_field(name='.setMaps', value='Sets specific maps !!COMING SOON!!', inline=False)
+    embed.add_field(name='.setMapsRandom',
+                    value='Sets 3 random maps - 3,4,5 can be used to limit the number of rounds',
+                    inline=False)
+    embed.add_field(name='.vsMaps', value='Displays all VS maps', inline=False)
 
-        # user help
-        embed.add_field(name='.addUser', value='Adds user_account to the database !!COMING SOON!!', inline=False)
-        embed.add_field(name='.displayHosts', value='Displays possible hosts', inline=False)
-        embed.add_field(name='.setHost', value='Sets the host if not in the user_account database no host is set',
-                        inline=False)
+    # user help
+    embed.add_field(name='.addUser', value='Adds user_account to the database !!COMING SOON!!', inline=False)
+    embed.add_field(name='.displayHosts', value='Displays possible hosts', inline=False)
+    embed.add_field(name='.setHost', value='Sets the host if not in the user_account database no host is set',
+                    inline=False)
 
-        embed.add_field(name='.clearHost', value='Clears the host', inline=False)
-        embed.add_field(name='.clearMaps', value='Clears the maps', inline=False)
-        embed.add_field(name='.clearAll', value='Clears the maps and host', inline=False)
+    embed.add_field(name='.clearHost', value='Clears the host', inline=False)
+    embed.add_field(name='.clearMaps', value='Clears the maps', inline=False)
+    embed.add_field(name='.clearAll', value='Clears the maps and host', inline=False)
 
-        # misc help
-        embed.add_field(name='.gameTime', value='Displays current time and game time', inline=False)
+    # misc help
+    embed.add_field(name='.gameTime', value='Displays current time and game time', inline=False)
 
-        # dm the user asking for help
-        author = ctx.message.author
-        await author.send(author, embed=embed)
+    # dm the user asking for help
+    author = ctx.message.author
+    await author.send(author, embed=embed)
+    print("help was run")
+    await ctx.message.delete()
 
 
 # sets maps to display if none picks randomly
@@ -78,6 +79,8 @@ async def setMapsRandom(ctx, mapcount1=None, mapcount2=None, mapcount3=None):
     mapCommands.randomMapFilter(currentMaps, mapcount1, mapcount2, mapcount3)
     setTime.ct = botTime.currentTime()
     mapSetMessage = "@every1 maps are set at " + setTime.ct + '👍'
+    print("setMapsRandom was run")
+    await ctx.message.delete()
     await ctx.send(mapSetMessage)
 
 
@@ -92,6 +95,8 @@ async def displayMaps(ctx):
     await author.send(hostHelp)
     await author.send(tnMaps)
     await author.send(cHost)
+    print("displayMaps was run")
+    await ctx.message.delete()
 
 
 # display all maps
@@ -103,6 +108,8 @@ async def vsMaps(ctx):
     await author.send(availableMaps.vsmapsdb[21:40])
     await author.send(availableMaps.vsmapsdb[41:60])
     await author.send(availableMaps.vsmapsdb[61:])
+    print("vsMaps was run")
+    await ctx.message.delete()
 
 
 # displays botTime and game botTime
@@ -111,8 +118,10 @@ async def time(ctx):
     gameTime = "```Game botTime is at 21:30:00 EASTERN TIMEZONE```"
     curTime = botTime.currentTime()
     author = ctx.message.author
+    print("gameTime was run")
     await author.send(curTime)
     await author.send(gameTime)
+    await ctx.message.delete()
 
 
 # host assigned
@@ -126,10 +135,13 @@ async def setHost(ctx, user):
 
         theHost = currentHost.host + " will host"
         hostSetAt = "set at " + hostTime.ct
-
+        await ctx.message.delete()
+        print("setHost was run")
         await ctx.send(theHost)
         await ctx.send(hostSetAt)
     else:
+        await ctx.message.delete()
+        print("setHost was run")
         currentHost.host = "no host set"
         await ctx.send(currentHost.host)
 
@@ -140,13 +152,16 @@ async def distplayHosts(ctx):
     author = ctx.message.author
     await author.send("USERNAME - BOT ADMIN - SERVER ROLE")
     await author.send(usersCommands.userDB)
+    await ctx.message.delete()
 
 
 # clears the host
 @bot.command(name='clearHost', help='clears the host')
-async def clearHosts(ctx):
+async def clearHost(ctx):
     hostTime.ct = botTime.sTime("")
     clear.clearHost(currentHost)
+    await ctx.message.delete()
+    print("clearHost was run")
     await ctx.send("Host is reset")
 
 
@@ -154,6 +169,8 @@ async def clearHosts(ctx):
 async def clearMaps(ctx):
     hostTime.ct = botTime.sTime("")
     clear.clearMaps(currentMaps)
+    await ctx.message.delete()
+    print("clearMaps was run")
     await ctx.send("Maps are reset")
 
 
@@ -162,10 +179,10 @@ async def clearAll(ctx):
     hostTime.ct = botTime.sTime("")
     clear.clearHost(currentHost)
     clear.clearMaps(currentMaps)
+    await ctx.message.delete()
+    print("clearAll was run")
     await ctx.send("Maps and Host are reset")
 
 
-# token
-token = os.environ.get("DISCORD_BOT_SECRET")
 # hide the token when committing
-bot.run("NzA4MDIyMDc2MDgyMDk0MTMx.XsGm_Q.vZ4G5UZxhbfmaLMEmfx5vjMAvBI")
+bot.run("NzA4MDIyMDc2MDgyMDk0MTMx.XsL03A.W3xlW4V8hTyqaSpTPrZgE1JzZ-Y")
