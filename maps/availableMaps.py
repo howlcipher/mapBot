@@ -17,6 +17,10 @@ allMaps = conn.cursor()
 data = allMaps.execute("SELECT map_name, download_link, map_count FROM maps ORDER BY map_id")
 maps = allMaps.fetchall()
 
+mapIDs = conn.cursor()
+dataIDs = allMaps.execute("SELECT map_id, map_name, map_count FROM maps ORDER BY map_id")
+mapsByID = allMaps.fetchall()
+
 # select all maps with map_count = 3
 maps3 = conn.cursor()
 data3 = maps3.execute("SELECT map_name, download_link, map_count FROM maps WHERE map_count = 3 ORDER BY map_id")
@@ -37,3 +41,4 @@ vsmapsdb3 = np.array(mapsThree)
 vsmapsdb4 = np.array(mapsFour)
 vsmapsdb5 = np.array(mapsFive)
 vsmapsdb = np.array(maps)
+vsmapsdbID = np.array(mapsByID)

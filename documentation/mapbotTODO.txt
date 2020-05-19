@@ -8,9 +8,12 @@ TODO
 -create clear commands - 5/18/20
 
 -create setMaps by name command
+-created randomMaps command of 2 and 3 maps - 5/19/20
 
 -create add map to db
 -create delete map from db
 
 -create add user to db
 -create delete user from db
+
+-Moved help to helpCommands.py 5/19/20

@@ -12,10 +12,14 @@ class Maps:
         self.ct = ct
 
 
+# RANDOM MAPS
 # random number 1 - x
 def randomNumber(x):
     return random.randint(1, x)
 
+
+def randomMapCount():
+    return random.randint(3, 5)
 
 # random number
 def randomMaps(mapTotal):
@@ -52,18 +56,35 @@ def setMapRandom(mapcount=None):
                availableMaps.vsmapsdb[mn["map1"]][2]
 
 
-def randomMapFilter(self, mapcount1, mapcount2, mapcount3):
+def randomMapFilter(self, mapcount1=None, mapcount2=None, mapcount3=None):
     m1 = mapcount1
     m2 = mapcount2
     m3 = mapcount3
 
     if (mapcount1 is not None):
         m1 = int(mapcount1)
+        self.m1 = setMapRandom(m1)
     if (mapcount2 is not None):
         m2 = int(mapcount2)
+        self.m2 = setMapRandom(m2)
     if (mapcount3 is not None):
         m3 = int(mapcount3)
+        self.m3 = setMapRandom(m3)
 
     self.m1 = setMapRandom(m1)
     self.m2 = setMapRandom(m2)
     self.m3 = setMapRandom(m3)
+
+
+# sets specific map - select the map and then the ID of the map
+def setMap(self, mapNum, mapID):
+    # set map
+    if (int(mapNum) == 1):
+        self.m1 = availableMaps.vsmapsdb[int(mapID) - 1][0] + ": " + availableMaps.vsmapsdb[int(mapID) - 1][
+            1] + " MAP COUNT:" + availableMaps.vsmapsdb[int(mapID) - 1][2]
+    if (int(mapNum) == 2):
+        self.m2 = availableMaps.vsmapsdb[int(mapID) - 1][0] + ": " + availableMaps.vsmapsdb[int(mapID) - 1][
+            1] + " MAP COUNT:" + availableMaps.vsmapsdb[int(mapID) - 1][2]
+    if (int(mapNum) == 3):
+        self.m3 = availableMaps.vsmapsdb[int(mapID) - 1][0] + ": " + availableMaps.vsmapsdb[int(mapID) - 1][
+            1] + " MAP COUNT:" + availableMaps.vsmapsdb[int(mapID) - 1][2]

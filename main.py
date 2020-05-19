@@ -6,12 +6,12 @@
 
 # imports
 
-import discord
 from discord.ext import commands
 
 # custom modules
 from botTime import botTime
 from clear import clear
+from help import helpCommands
 from maps import availableMaps, mapCommands
 from users import usersCommands
 
@@ -29,7 +29,7 @@ async def on_ready():
 
 # initialized variables
 currentMaps = mapCommands.Maps("MAP1: is unset", "MAP2: is unset", "MAP3: is unset", "No botTime set")
-setTime = botTime.sTime("no botTime set")
+setTime = botTime.sTime("no time set")
 hostTime = botTime.sTime("")
 currentHost = usersCommands.Host("No host set")
 
@@ -38,41 +38,11 @@ currentHost = usersCommands.Host("No host set")
 # custom help
 @bot.command(pass_context=True)
 async def help(ctx):
-    embed = discord.Embed(
-        colour=discord.Colour.green(),
-        title="HELP COMMANDS FOR USING THE MAPBOT",
-        description="How to use mapBot"
-    )
-    embed.set_author(name='mapBot')
-    # map help
-    embed.add_field(name='.addMap', value='adds a map to the database !!COMING SOON!!', inline=False)
-    embed.add_field(name='.displayMaps', value='Displays current maps to be played', inline=False)
-    embed.add_field(name='.setMaps', value='Sets specific maps !!COMING SOON!!', inline=False)
-    embed.add_field(name='.setMapsRandom',
-                    value='Sets 3 random maps - 3,4,5 can be used to limit the number of rounds',
-                    inline=False)
-    embed.add_field(name='.vsMaps', value='Displays all VS maps', inline=False)
-
-    # user help
-    embed.add_field(name='.addUser', value='Adds user_account to the database !!COMING SOON!!', inline=False)
-    embed.add_field(name='.displayHosts', value='Displays possible hosts', inline=False)
-    embed.add_field(name='.setHost', value='Sets the host if not in the user_account database no host is set',
-                    inline=False)
-
-    embed.add_field(name='.clearHost', value='Clears the host', inline=False)
-    embed.add_field(name='.clearMaps', value='Clears the maps', inline=False)
-    embed.add_field(name='.clearAll', value='Clears the maps and host', inline=False)
-
-    # misc help
-    embed.add_field(name='.gameTime', value='Displays current time and game time', inline=False)
-
-    # dm the user asking for help
-    author = ctx.message.author
-    await author.send(author, embed=embed)
-    print("help was run")
     await ctx.message.delete()
+    await helpCommands.help(ctx)
 
 
+# map commands
 # sets maps to display if none picks randomly
 @bot.command(name='setMapsRandom', help='Sets the maps to be played - RANDOM Modifiers(3,4,5)')
 async def setMapsRandom(ctx, mapcount1=None, mapcount2=None, mapcount3=None):
@@ -83,6 +53,15 @@ async def setMapsRandom(ctx, mapcount1=None, mapcount2=None, mapcount3=None):
     await ctx.message.delete()
     await ctx.send(mapSetMessage)
 
+
+@bot.command(name='setMap', help='Sets the maps to be played')
+async def setMap(ctx, mapNum, mapID):
+    mapCommands.setMap(currentMaps, mapNum, mapID)
+    setTime.ct = botTime.currentTime()
+    mapSetMessage = (f"@every1 map {mapNum} is set at " + setTime.ct + '👍')
+    print(f"setMap {mapNum} was run")
+    await ctx.message.delete()
+    await ctx.send(mapSetMessage)
 
 # display the maps selected and what botTime they were set
 @bot.command(name='displayMaps', help='Displays the current maps to be played')
@@ -104,10 +83,8 @@ async def displayMaps(ctx):
 async def vsMaps(ctx):
     # display all maps - limit of 2000 characters on discord
     author = ctx.message.author
-    await author.send(availableMaps.vsmapsdb[1:20])
-    await author.send(availableMaps.vsmapsdb[21:40])
-    await author.send(availableMaps.vsmapsdb[41:60])
-    await author.send(availableMaps.vsmapsdb[61:])
+    await author.send("ID, Map Name, Map Count")
+    await author.send(availableMaps.vsmapsdbID)
     print("vsMaps was run")
     await ctx.message.delete()
 
@@ -124,6 +101,13 @@ async def time(ctx):
     await ctx.message.delete()
 
 
+# Displays the last 10 maps
+@bot.command(name="last10", help="Displays last 10 maps")
+async def time(ctx):
+    await ctx.message()
+
+
+# Host Commands
 # host assigned
 @bot.command(name='setHost', help='sets the host if not in the user_account database no host is set')
 # @commands.has_role("testRole")
@@ -155,16 +139,17 @@ async def distplayHosts(ctx):
     await ctx.message.delete()
 
 
+# Clear commands
 # clears the host
 @bot.command(name='clearHost', help='clears the host')
 async def clearHost(ctx):
     hostTime.ct = botTime.sTime("")
     clear.clearHost(currentHost)
     await ctx.message.delete()
-    print("clearHost was run")
     await ctx.send("Host is reset")
 
 
+# clears maps
 @bot.command(name='clearMaps', help='clears the maps')
 async def clearMaps(ctx):
     hostTime.ct = botTime.sTime("")
@@ -174,6 +159,20 @@ async def clearMaps(ctx):
     await ctx.send("Maps are reset")
 
 
+# clears a secific Map (1, 2, or 3)
+@bot.command(name='clearMap', help='clears the maps')
+async def clearMap(ctx, mapNum):
+    hostTime.ct = botTime.sTime("")
+    clear.clearMap(currentMaps, ctx, mapNum)
+    await ctx.message.delete()
+    print("clearMap was run")
+    if (int(mapNum) < 4):
+        await ctx.send(f"Map {mapNum} was reset")
+    else:
+        await ctx.send(f"Map {mapNum} is not valid")
+
+
+# clears all
 @bot.command(name='clearAll', help='clears the host and maps')
 async def clearAll(ctx):
     hostTime.ct = botTime.sTime("")
@@ -185,4 +184,4 @@ async def clearAll(ctx):
 
 
 # hide the token when committing
-bot.run("NzA4MDIyMDc2MDgyMDk0MTMx.XsL03A.W3xlW4V8hTyqaSpTPrZgE1JzZ-Y")
+bot.run("TOKEN")
