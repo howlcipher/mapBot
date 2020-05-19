@@ -22,12 +22,14 @@ This is a Discord Bot that utilizes POSTGRES SQL and DISCORD.py to create a bot<
 <h3>MAP COMMANDS</h3>
 <ul>
   <li>displayMaps -  Displays the current maps to be played</li>
+  <li>setMap - sets map 1, 2, or 3 and map by ID</li>
   <li>setMapsRandom - Sets three random maps (use arguments of 3, 4, or 5 to pull from a map_count of the same number)</li>
-  <li>vsMaps - Displays all vs maps</li>
+  <li>vsMaps - Displays all vs maps with ID</li>
 </ul>
 <h3>CLEAR COMMANDS</h3>
 <ul>
   <li>clearHost - Clears the host entry</li>
+  <li>clearMap - Clears map 1, 2, or 3</li>
   <li>clearMaps - Clears the maps</li>
   <li>clearAll  - Clears maps and the host</li>
 </ul>
