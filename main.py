@@ -56,12 +56,17 @@ async def setMapsRandom(ctx, mapcount1=None, mapcount2=None, mapcount3=None):
 
 @bot.command(name='setMap', help='Sets the maps to be played')
 async def setMap(ctx, mapNum, mapID):
-    mapCommands.setMap(currentMaps, mapNum, mapID)
-    setTime.ct = botTime.currentTime()
-    mapSetMessage = (f"@every1 map {mapNum} is set at " + setTime.ct + '👍')
-    print(f"setMap {mapNum} was run")
-    await ctx.message.delete()
-    await ctx.send(mapSetMessage)
+    if (int(mapNum) < 4):
+        mapCommands.setMap(currentMaps, mapNum, mapID)
+        setTime.ct = botTime.currentTime()
+        mapSetMessage = (f"@every1 map {mapNum} is set at " + setTime.ct + '👍')
+        print(f"setMap {mapNum} was run")
+        await ctx.message.delete()
+        await ctx.send(mapSetMessage)
+    else:
+        await ctx.message.delete()
+        print(f"setMap {mapNum} was run")
+        await ctx.send(f"Map {mapNum} is not a valid, try 1, 2, or 3.")
 
 # display the maps selected and what botTime they were set
 @bot.command(name='displayMaps', help='Displays the current maps to be played')
