@@ -1,0 +1,14 @@
+--create the table
+
+CREATE TABLE user_account(
+	map_id SERIAL PRIMARY KEY,
+	map_name VARCHAR(75) UNIQUE NOT NULL,
+	last_played  VARCHAR(100)
+)
+
+
+
+
+--Inserting users into data base id, username, bot_admin, server role, created on
+--(int, string, boolean, string,  CURRENT_TIMESTAMP)
+INSERT INTO lastten (map_name, last_played) Values('map_name', 'last_played')
