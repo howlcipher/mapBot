@@ -46,7 +46,7 @@ async def help(ctx):
 async def setMapsRandom(ctx, mapcount1=None, mapcount2=None, mapcount3=None):
     mapCommands.randomMapFilter(currentMaps, mapcount1, mapcount2, mapcount3)
     setTime.ct = botTime.currentTime()
-    mapSetMessage = "@every1 maps are set at " + setTime.ct + '👍'
+    mapSetMessage = "@everyone maps are set at " + setTime.ct + '👍'
     print("setMapsRandom was run")
     await ctx.message.delete()
     await ctx.send(mapSetMessage)
@@ -57,7 +57,7 @@ async def setMap(ctx, mapNum, mapID):
     if (int(mapNum) < 4):
         mapCommands.setMap(currentMaps, mapNum, mapID)
         setTime.ct = botTime.currentTime()
-        mapSetMessage = (f"@every1 map {mapNum} is set at " + setTime.ct + '👍')
+        mapSetMessage = (f"@everyone map {mapNum} is set at " + setTime.ct + '👍')
         print(f"setMap {mapNum} was run")
         await ctx.message.delete()
         await ctx.send(mapSetMessage)
