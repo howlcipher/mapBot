@@ -42,10 +42,11 @@ This is a Discord Bot that utilizes POSTGRES SQL and DISCORD.py to create a bot<
 </ul>
 
 <h2>Resources:</h2><ul>
+<li><a href="https://discord.com/">Discord</a></li>
+<li><a href = "https://discord.com/developers/applications">Discord Applications</a></li>
 <li><a href = "https://www.python.org/">Python</a></li>
 <li><a href = "https://www.jetbrains.com/pycharm/">PyCharm Python IDE</a></li>
 <li><a href = "https://www.pgadmin.org/">PGADMIN PostgresSQL</a></li>
-<li><a href = "https://discord.com/developers/applications">Discord Applications</a></li>
 <li><a href = "https://www.postgresqltutorial.com/">Postgres SQL Tutorial</a></li>
 <li><a href="https://www.w3schools.com/python/default.asp">Python and numpy tutorial</a></li>
 <li><a href="https://towardsdatascience.com/creating-a-discord-bot-from-scratch-and-connecting-to-mongodb-828ad1c7c22e">Creating a Discord Bot tutorial</a></li>
