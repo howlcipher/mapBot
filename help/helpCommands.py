@@ -21,7 +21,6 @@ async def help(self):
 
     # user help
     embed.add_field(name='###USER / HOST COMMANDS###', value='-----', inline=False)
-    embed.add_field(name='.addUser', value='Adds user_account to the database !!COMING SOON!!', inline=False)
     embed.add_field(name='.displayHosts', value='Displays possible hosts', inline=False)
     embed.add_field(name='.setHost', value='Sets the host if not in the user_account database no host is set',
                     inline=False)
