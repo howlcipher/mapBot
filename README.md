@@ -24,6 +24,8 @@ This is a Discord Bot that utilizes POSTGRES SQL and DISCORD.py to create a bot<
   <li>displayMaps -  Displays the current maps to be played</li>
   <li>setMap - sets map 1, 2, or 3 and map by ID</li>
   <li>setMapsRandom - Sets three random maps (use arguments of 3, 4, or 5 to pull from a map_count of the same number)</li>
+  <li>last10 - Displays the last 10 maps played</li>
+  <li>played - Updates the lastten database with the .displayMaps</li>
   <li>vsMaps - Displays all vs maps with ID</li>
 </ul>
 <h3>CLEAR COMMANDS</h3>
