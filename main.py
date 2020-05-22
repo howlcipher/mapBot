@@ -12,13 +12,11 @@ from discord.ext import commands
 from botTime import botTime
 from clear import clear
 from help import helpCommands
-from maps import availableMaps, mapCommands
+from maps import availableMaps, mapCommands, lastten
 from users import usersCommands
 
-vsMapList = availableMaps.vsmapsdb
 bot = commands.Bot(command_prefix='.')
 bot.remove_command('help')
-
 
 # signal for bot online
 
@@ -28,11 +26,11 @@ async def on_ready():
 
 
 # initialized variables
-currentMaps = mapCommands.Maps("MAP1: is unset", "MAP2: is unset", "MAP3: is unset", "No botTime set")
+currentMaps = mapCommands.Maps("No map set", "No map set", "No map set", "No botTime set")
 setTime = botTime.sTime("no time set")
 hostTime = botTime.sTime("")
 currentHost = usersCommands.Host("No host set")
-
+vsMapList = availableMaps.vsmapsdb
 
 # commands
 # custom help
@@ -56,12 +54,17 @@ async def setMapsRandom(ctx, mapcount1=None, mapcount2=None, mapcount3=None):
 
 @bot.command(name='setMap', help='Sets the maps to be played')
 async def setMap(ctx, mapNum, mapID):
-    mapCommands.setMap(currentMaps, mapNum, mapID)
-    setTime.ct = botTime.currentTime()
-    mapSetMessage = (f"@every1 map {mapNum} is set at " + setTime.ct + '👍')
-    print(f"setMap {mapNum} was run")
-    await ctx.message.delete()
-    await ctx.send(mapSetMessage)
+    if (int(mapNum) < 4):
+        mapCommands.setMap(currentMaps, mapNum, mapID)
+        setTime.ct = botTime.currentTime()
+        mapSetMessage = (f"@every1 map {mapNum} is set at " + setTime.ct + '👍')
+        print(f"setMap {mapNum} was run")
+        await ctx.message.delete()
+        await ctx.send(mapSetMessage)
+    else:
+        await ctx.message.delete()
+        print(f"setMap {mapNum} was run")
+        await ctx.send(f"Map {mapNum} is not a valid, try 1, 2, or 3.")
 
 # display the maps selected and what botTime they were set
 @bot.command(name='displayMaps', help='Displays the current maps to be played')
@@ -104,7 +107,22 @@ async def time(ctx):
 # Displays the last 10 maps
 @bot.command(name="last10", help="Displays last 10 maps")
 async def time(ctx):
-    await ctx.message()
+    author = ctx.message.author
+    await ctx.message.delete()
+    print("last10 was run")
+    await author.send(lastten.displayLastTen())
+
+
+# Sends maps to lastten DB
+@bot.command(name="played", help="Updates lastten DB with maps played")
+async def time(ctx):
+    author = ctx.message.author
+    await ctx.message.delete()
+    lastten.updateDB(currentMaps.m1)
+    lastten.updateDB(currentMaps.m2)
+    lastten.updateDB(currentMaps.m3)
+    print("played was run")
+    await author.send(lastten.displayLastTen())
 
 
 # Host Commands
@@ -159,7 +177,7 @@ async def clearMaps(ctx):
     await ctx.send("Maps are reset")
 
 
-# clears a secific Map (1, 2, or 3)
+# clears a specific Map (1, 2, or 3)
 @bot.command(name='clearMap', help='clears the maps')
 async def clearMap(ctx, mapNum):
     hostTime.ct = botTime.sTime("")

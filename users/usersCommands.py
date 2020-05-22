@@ -11,7 +11,7 @@ conn = psycopg2.connect(
 )
 
 # testing sql query
-print("connected to postgres SQL USER_ACCOUNT DB")
+print("connected to postgres SQL USER DB")
 cur = conn.cursor()
 data = cur.execute("SELECT username, bot_admin, server_role FROM user_account ORDER BY user_id")
 userDB = np.array(cur.fetchall())
