@@ -11,7 +11,7 @@ async def help(self):
     # map help
     embed.add_field(name='###MAPS COMMANDS###', value='-----', inline=False)
     embed.add_field(name='.displayMaps', value='Displays current maps to be played', inline=False)
-    embed.add_field(name='.setMaps', value='Sets specific maps based on ID.  Use .vsMaps to see ID', inline=False)
+    embed.add_field(name='.setMap', value='Sets specific maps based on ID.  Use .vsMaps to see ID', inline=False)
     embed.add_field(name='.setMapsRandom',
                     value='Sets 3 random maps - 3,4,5 can be used to limit the number of rounds',
                     inline=False)

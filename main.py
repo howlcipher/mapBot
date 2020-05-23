@@ -113,7 +113,7 @@ async def time(ctx):
     await author.send(lastten.displayLastTen())
 
 
-# Sends maps to lastten DB
+# Sends maps to lastten DB - clears maps and host
 @bot.command(name="played", help="Updates lastten DB with maps played")
 async def time(ctx):
     author = ctx.message.author
@@ -121,6 +121,10 @@ async def time(ctx):
     lastten.updateDB(currentMaps.m1)
     lastten.updateDB(currentMaps.m2)
     lastten.updateDB(currentMaps.m3)
+    hostTime.ct = botTime.sTime("")
+    clear.clearHost(currentHost)
+    clear.clearMaps(currentMaps)
+    print("clearAll was run")
     print("played was run")
     await author.send(lastten.displayLastTen())
 
@@ -202,4 +206,4 @@ async def clearAll(ctx):
 
 
 # hide the token when committing
-bot.run("TOKEN")
+bot.run("BOT TOKEN")
