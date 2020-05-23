@@ -50,4 +50,7 @@ This is a Discord Bot that utilizes POSTGRES SQL and DISCORD.py to create a bot<
 <li><a href = "https://www.postgresqltutorial.com/">Postgres SQL Tutorial</a></li>
 <li><a href="https://www.w3schools.com/python/default.asp">Python and numpy tutorial</a></li>
 <li><a href="https://towardsdatascience.com/creating-a-discord-bot-from-scratch-and-connecting-to-mongodb-828ad1c7c22e">Creating a Discord Bot tutorial</a></li>
+</ul>
 
+<h2>Video Demonstration of mapBot</h2>
+<a href="https://www.youtube.com/watch?v=WkXoqdpq-3Q&feature=youtu.be">YouTube Video Demonstration</a>
